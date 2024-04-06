@@ -13,10 +13,17 @@ paths:
   
 #### contenu de la fichier application.properties
 server.port=8080
+
 server.servlet.context-path=/api
+
 spring.datasource.url=jdbc:postgresql://localhost:5432/transport_management_system
+
 spring.datasource.username=nom_utilisateur
+
 spring.datasource.password=mot_de_passe
+
 spring.datasource.driver-class-name=org.postgresql.Driver
+
 spring.jpa.hibernate.ddl-auto=update
+
 spring.jpa.show-sql=true
