@@ -1,9 +1,6 @@
 package hei.shool.transportationmanagementsystem.advices;
 
-import hei.shool.transportationmanagementsystem.exceptions.EntityBadRequestException;
-import hei.shool.transportationmanagementsystem.exceptions.EntityInternalServerException;
-import hei.shool.transportationmanagementsystem.exceptions.EntityNotFoundException;
-import hei.shool.transportationmanagementsystem.exceptions.EntityUnauthorizedException;
+import hei.shool.transportationmanagementsystem.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,9 +13,9 @@ import java.time.LocalDate;
 @RestControllerAdvice
 public class ApplicationControllerAdvice {
 
-    @ExceptionHandler(EntityBadRequestException.class)
+    @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public @ResponseBody  ApplicationErrorMessage handleEntityBadRequestException(EntityBadRequestException ex) {
+    public @ResponseBody  ApplicationErrorMessage handleEntityBadRequestException(BadRequestException ex) {
         return new ApplicationErrorMessage(
                 ex.getMessage(),
                 LocalDate.now(),
@@ -26,9 +23,9 @@ public class ApplicationControllerAdvice {
         );
     }
 
-    @ExceptionHandler({EntityNotFoundException.class, UsernameNotFoundException.class})
+    @ExceptionHandler({NotFoundException.class, UsernameNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody ApplicationErrorMessage handlerException(EntityNotFoundException ex) {
+    public @ResponseBody ApplicationErrorMessage handlerException(NotFoundException ex) {
         return new ApplicationErrorMessage(
                 ex.getMessage(),
                 LocalDate.now(),
@@ -36,9 +33,18 @@ public class ApplicationControllerAdvice {
         );
     }
 
-    @ExceptionHandler(EntityInternalServerException.class)
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public @ResponseBody ApplicationErrorMessage handleForbiddenException(ForbiddenException ex) {
+        return new ApplicationErrorMessage(
+                ex.getMessage(),
+                LocalDate.now(),
+                HttpStatus.FORBIDDEN.value()
+        );
+    }
+    @ExceptionHandler(InternalServerException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public @ResponseBody  ApplicationErrorMessage handlerException(EntityInternalServerException ex) {
+    public @ResponseBody  ApplicationErrorMessage handlerException(InternalServerException ex) {
         return new ApplicationErrorMessage(
                 ex.getMessage(),
                 LocalDate.now(),
@@ -47,9 +53,9 @@ public class ApplicationControllerAdvice {
     }
 
 
-    @ExceptionHandler(EntityUnauthorizedException.class)
+    @ExceptionHandler(UnauthorizedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public @ResponseBody ApplicationErrorMessage handlerException(EntityUnauthorizedException ex) {
+    public @ResponseBody ApplicationErrorMessage handlerException(UnauthorizedException ex) {
         return new ApplicationErrorMessage(
                 ex.getMessage(),
                 LocalDate.now(),
