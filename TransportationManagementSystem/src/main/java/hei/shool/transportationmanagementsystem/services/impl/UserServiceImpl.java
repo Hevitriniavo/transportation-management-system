@@ -31,9 +31,10 @@ public class UserServiceImpl implements UserService {
         UserType userType = userTypeRepository.findByType("USER")
                 .orElseGet(() -> userTypeRepository.save(UserType.builder().type("USER").build()));
 
-        if (!user.getUserTypes().contains(userType)) {
+        if (user.getUserTypes() != null && !user.getUserTypes().contains(userType)) {
             user.getUserTypes().add(userType);
         }
+
         userRepository.save(user);
         return Map.of("response", "user added successfully");
     }

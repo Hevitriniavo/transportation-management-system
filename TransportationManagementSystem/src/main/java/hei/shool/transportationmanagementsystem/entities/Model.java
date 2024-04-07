@@ -5,10 +5,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Getter
@@ -22,10 +25,10 @@ public class Model {
     @Column(name = "id", updatable = false, nullable = false)
     protected Long id;
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(updatable = false)
-    protected LocalDate createdAt;
+    protected LocalDateTime createdAt;
 
-    @LastModifiedDate
-    protected LocalDate updatedAt;
+    @UpdateTimestamp
+    protected LocalDateTime updatedAt;
 }
