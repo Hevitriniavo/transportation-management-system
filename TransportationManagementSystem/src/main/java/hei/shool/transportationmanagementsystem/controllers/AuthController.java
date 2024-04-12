@@ -76,6 +76,7 @@ public class AuthController {
                 joinedUserTypes,
                    "image", loggedInUser.getPhoto()
             ));
+            loggedInUser.setToken(token);
             userRepository.save(loggedInUser);
             return Map.of(
                     "accessToken",
