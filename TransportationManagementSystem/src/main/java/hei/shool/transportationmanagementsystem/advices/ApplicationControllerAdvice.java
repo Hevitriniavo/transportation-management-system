@@ -62,4 +62,14 @@ public class ApplicationControllerAdvice {
                 HttpStatus.UNAUTHORIZED.value()
         );
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody ApplicationErrorMessage handlerException(IllegalArgumentException ex) {
+        return new ApplicationErrorMessage(
+                ex.getMessage(),
+                LocalDate.now(),
+                HttpStatus.BAD_REQUEST.value()
+        );
+    }
 }
