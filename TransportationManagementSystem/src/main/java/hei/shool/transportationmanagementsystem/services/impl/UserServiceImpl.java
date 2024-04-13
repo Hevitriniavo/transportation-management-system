@@ -3,7 +3,7 @@ package hei.shool.transportationmanagementsystem.services.impl;
 import hei.shool.transportationmanagementsystem.entities.User;
 import hei.shool.transportationmanagementsystem.entities.Role;
 import hei.shool.transportationmanagementsystem.repositories.UserRepository;
-import hei.shool.transportationmanagementsystem.repositories.UserTypeRepository;
+import hei.shool.transportationmanagementsystem.repositories.RoleRepository;
 import hei.shool.transportationmanagementsystem.services.UserService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,12 +15,12 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserTypeRepository userTypeRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserTypeRepository userTypeRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.userTypeRepository = userTypeRepository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -28,8 +28,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<String, String> register(User user) {
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
-        Role role = userTypeRepository.findByName("USER")
-                .orElseGet(() -> userTypeRepository.save(Role.builder().name("USER").build()));
+        Role role = roleRepository.findByName("USER")
+                .orElseGet(() -> roleRepository.save(Role.builder().name("USER").build()));
 
         if (user.getRoles() != null && !user.getRoles().contains(role)) {
             user.getRoles().add(role);
