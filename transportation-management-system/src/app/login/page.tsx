@@ -8,28 +8,30 @@ import { MdLogin } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
 import { FormEvent, useRef, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { postData } from "@/services/postData";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+    const { data: session } = useSession();
+    const router = useRouter();
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const inputRefs = useRef<HTMLInputElement[]>([]);
 
-    const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const formData: { [key: string]: string } = {};
-        inputRefs.current.forEach((ref) => {
-            formData[ref.name] = ref.value;
+    const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const email = inputRefs.current[0].value;
+        const password = inputRefs.current[1].value;
+        const result = await signIn("credentials", {
+            email,
+            password,
+            redirect: false,
         });
-        try {
-            const response = await postData("/auth/login", formData);
-            console.log(response);
-        } catch (error) {
-            console.error("Une erreur s'est produite lors de l'envoi des données :", error);
+
+        if (!result?.error) {
+            router.push("/");
         }
-
-    }
-
+    };
 
     return (
         <>
@@ -74,14 +76,13 @@ export default function LoginForm() {
                         <span className="text-[12px]">Vous n'avez pas encore de compte?</span>
                         <Link href="/register" className="text-[12px] text-blue-500 hover:underline">créer un compte</Link>
                     </div>
-                    <div className="mx-5 flex items-center justify-center bg-blue-500 rounded hover:bg-blue-700 w-1/2 p-4">
-                        <Button
-                            type="submit"
-                            className="text-white text-center"
-                            text={<MdLogin />}
-                        />
-                    </div>
+                    <Button
+                        type="submit"
+                        className="mx-5 text-white flex justify-center  bg-blue-500 rounded hover:bg-blue-700 w-1/2 p-4"
+                        text={<MdLogin />}
+                    />
                 </form>
+
             </div>
         </>
     )

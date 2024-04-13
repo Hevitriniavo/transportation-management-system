@@ -1,8 +1,10 @@
 "use client";
+import { useSession } from "next-auth/react";
 import { FormEvent, useState } from "react";
 
 export default function Home() {
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const { data: session } = useSession();
   const [formulair, setFormulair] = useState({
     depart: "",
     arrivee: "",
@@ -24,7 +26,7 @@ export default function Home() {
   return (
     <div className="h-screen image">
       <h1 className="text-white font-extrabold w-7/12 text-8xl text-wrap 
-      -rotate-45 absolute top-56 text-center">Bienvenue Chez Trans Tantely</h1>
+      -rotate-45 absolute top-56 text-center">Bienvenue Chez Trans Ambala</h1>
       <div className="flex flex-col justify-evenly items-center w-1/3 h-96 
       rounded bg-slate-600 position ">
         <h1 className="font-bold text-white">Choisissez votre itinéraire</h1>
@@ -76,11 +78,14 @@ export default function Home() {
             className="p-2 w-full  border border-gray-400 rounded bg-slate-500 
             outline-none focus:outline-gray-500 outline-1 " />
           <button type="submit" className="p-2 w-96 bg-blue-600 rounded-md text-white">Réserver</button>
+          
         </form>
         {formSubmitted && (formulair.depart === '' || formulair.date === '' || formulair.arrivee === '' || formulair.number === '') && (
           <p style={{ color: 'red' }}>Veuillez remplir tous les champs obligatoires.</p>
         )}
-
+        <pre>
+        {JSON.stringify(session)}
+        </pre>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "user_types")
+@Table(name = "roles")
 @Getter
 @Setter
 @ToString
@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Builder
-public class UserType extends Model {
+public class Role extends Model {
 
-    private String type;
+    private String name;
 }

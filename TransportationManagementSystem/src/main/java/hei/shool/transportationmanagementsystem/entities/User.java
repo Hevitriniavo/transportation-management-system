@@ -44,13 +44,26 @@ public class User extends Model implements Serializable, UserDetails {
 
     private String token;
 
+    @ManyToOne
+    private Place place;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<UserType> userTypes = new ArrayList<>();
+    private List<Role> roles = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "driver")
+    private List<Transport> transportsAsDriver = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customer")
+    private List<Transport> transportsAsCustomer = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Reservation> reservations = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return userTypes.stream()
-                .map(userType -> new SimpleGrantedAuthority(userType.getType()))
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
     }
 

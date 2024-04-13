@@ -3,7 +3,7 @@ package hei.shool.transportationmanagementsystem.controllers;
 import hei.shool.transportationmanagementsystem.config.JwtService;
 import hei.shool.transportationmanagementsystem.dtos.requests.CredentialRequest;
 import hei.shool.transportationmanagementsystem.entities.User;
-import hei.shool.transportationmanagementsystem.entities.UserType;
+import hei.shool.transportationmanagementsystem.entities.Role;
 import hei.shool.transportationmanagementsystem.enums.Gender;
 import hei.shool.transportationmanagementsystem.repositories.UserRepository;
 import hei.shool.transportationmanagementsystem.services.FileService;
@@ -68,8 +68,8 @@ public class AuthController {
                 ));
 
         var loggedInUser = userService.findByEmail(user.email());
-           var joinedUserTypes = loggedInUser.getUserTypes().stream()
-                .map(UserType::getType)
+           var joinedUserTypes = loggedInUser.getRoles().stream()
+                .map(Role::getName)
                 .collect(Collectors.joining(" "));
            var token = jwtService.generateToken(loggedInUser, Map.of(
                     "roles",

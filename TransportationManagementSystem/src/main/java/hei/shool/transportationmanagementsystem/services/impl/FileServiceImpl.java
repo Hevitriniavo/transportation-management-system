@@ -65,6 +65,7 @@ public class FileServiceImpl implements FileService {
         return Paths.get(ResourceUtils.getFile("classpath:static").getAbsolutePath(), uploadDir);
     }
 
+
     private Path getUploadPath(String directory) throws IOException {
         return Paths.get(ResourceUtils.getFile("classpath:static").getAbsolutePath(), uploadDir, directory);
     }
